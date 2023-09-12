@@ -1,3 +1,260 @@
+
+class Musician {
+  static #count = 0;
+  #name;
+  #instrument;
+
+  constructor(name, instrument) {
+    this.#name = name;
+    this.#instrument = instrument;
+    Musician.#count++;
+  }
+
+  static get count() {
+    return Musician.#count;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get instrument() {
+    return this.#instrument;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  set instrument(newInstrument) {
+    this.#instrument = newInstrument;
+  }
+
+  play() {
+    console.log(`${this.#name} грає на ${this.#instrument}`);
+  }
+}
+
+class Guitarist extends Musician {
+  #band;
+
+  constructor(name, band) {
+    super(name, 'гітара');
+    this.#band = band;
+  }
+
+  get band() {
+    return this.#band;
+  }
+
+  set band(newBand) {
+    this.#band = newBand;
+  }
+
+  joinBand(newBand) {
+    this.#band = newBand;
+  }
+
+  play() {
+    console.log(`${this.name} грає на ${this.instrument} в групі ${this.#band}`);
+  }
+}
+
+class Bassist extends Musician {
+  #band;
+
+  constructor(name, band) {
+    super(name, 'бас-гітара');
+    this.#band = band;
+  }
+
+  get band() {
+    return this.#band;
+  }
+
+  set band(newBand) {
+    this.#band = newBand;
+  }
+
+  joinBand(newBand) {
+    this.#band = newBand;
+  }
+
+  play() {
+    console.log(`${this.name} грає на ${this.instrument} в групі ${this.#band}`);
+  }
+}
+
+class Band {
+  #name;
+  #members = [];
+
+  constructor(name) {
+    this.#name = name;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get members() {
+    return this.#members;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  addMember(newMember) {
+    if (newMember instanceof Musician) {
+      this.#members.push(newMember);
+    } else {
+      console.log('Новий учасник повинен бути екземпляром класу Musician');
+    }
+  }
+
+  playMusic() {
+    this.#members.forEach(member => member.play());
+  }
+}
+
+class Performance {
+  #band;
+  #location;
+  #date;
+
+  constructor(band, location, date) {
+    this.#band = band;
+    this.#location = location;
+    this.#date = date;
+  }
+
+  get band() {
+    return this.#band;
+  }
+
+  get location() {
+    return this.#location;
+  }
+
+  get date() {
+    return this.#date;
+  }
+
+  info() {
+    console.log(`Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`);
+  }
+}
+
+class Concert extends Performance {
+  #ticketPrice;
+
+  constructor(band, location, date, ticketPrice) {
+    super(band, location, date);
+    this.#ticketPrice = ticketPrice;
+  }
+
+  get ticketPrice() {
+    return this.#ticketPrice;
+  }
+
+  set ticketPrice(newPrice) {
+    this.#ticketPrice = newPrice;
+  }
+
+  info() {
+    console.log(`Гурт ${super.band.name} виступить в ${super.location} ${super.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`);
+  }
+}
+
+class Vocalist {
+  #name;
+  #band;
+
+  constructor(name, band) {
+    this.#name = name;
+    this.#band = band;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get band() {
+    return this.#band;
+  }
+
+  set name(newName) {
+    this.#name = newName;
+  }
+
+  set band(newBand) {
+    this.#band = newBand;
+  }
+
+  info() {
+    console.log(`Вокаліст ${this.#name} є членом гурту ${this.#band}`);
+  }
+}
+
+class SongWriter {
+  #songs = [];
+
+  addSong(song) {
+    this.#songs.push(song);
+  }
+
+  info() {
+    console.log(`Написав ${this.#songs.length} пісень`);
+  }
+}
+
+class LeadSinger extends Vocalist {
+  #songs = [];
+
+  constructor(name, band) {
+    super(name, band);
+  }
+
+  info() {
+    console.log(`Лідер гурту ${this.band} - ${this.name}. Написав ${this.#songs.length} пісень.`);
+  }
+}
+
+const musician = new Musician('John', 'гітара');
+const guitarist = new Guitarist('Jimmy Page', 'Led Zeppelin');
+const bassist = new Bassist('Paul McCartney', 'The Beatles');
+const band = new Band('The Beatles');
+band.addMember(bassist);
+
+const performance = new Performance(band, 'Liverpool', new Date('2023-08-01'));
+const concert = new Concert(band, 'BBC studios', new Date('1994-07-06'), 100);
+const vocalist = new Vocalist('Freddie Mercury', 'Queen');
+const songwriter = new SongWriter();
+songwriter.addSong('Yesterday');
+songwriter.addSong('Hey Jude');
+songwriter.addSong('Let It Be');
+const leadsinger = new LeadSinger('Mick Jagger', 'The Rolling Stones');
+
+musician.play();
+guitarist.play();
+bassist.play();
+band.playMusic();
+performance.info();
+concert.info();
+vocalist.info();
+songwriter.info();
+leadsinger.info();
+
+console.log(`Загальна кількість музикантів: ${Musician.count}`);
+
+
+
+
+
+
+
+
 // /*
 //  * Клас: Musician
 //  * Статичні поля:
@@ -379,252 +636,3 @@
 // // songwriter.info();
 // // leadsinger.info();
 
-
-class Musician {
-  static #count = 0;
-  #name;
-  #instrument;
-
-  constructor(name, instrument) {
-    this.#name = name;
-    this.#instrument = instrument;
-    Musician.#count++;
-  }
-
-  static get count() {
-    return Musician.#count;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  get instrument() {
-    return this.#instrument;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  set instrument(newInstrument) {
-    this.#instrument = newInstrument;
-  }
-
-  play() {
-    console.log(`${this.#name} грає на ${this.#instrument}`);
-  }
-}
-
-class Guitarist extends Musician {
-  #band;
-
-  constructor(name, band) {
-    super(name, 'гітара');
-    this.#band = band;
-  }
-
-  get band() {
-    return this.#band;
-  }
-
-  set band(newBand) {
-    this.#band = newBand;
-  }
-
-  joinBand(newBand) {
-    this.#band = newBand;
-  }
-
-  play() {
-    console.log(`${this.name} грає на ${this.instrument} в групі ${this.#band}`);
-  }
-}
-
-class Bassist extends Musician {
-  #band;
-
-  constructor(name, band) {
-    super(name, 'бас-гітара');
-    this.#band = band;
-  }
-
-  get band() {
-    return this.#band;
-  }
-
-  set band(newBand) {
-    this.#band = newBand;
-  }
-
-  joinBand(newBand) {
-    this.#band = newBand;
-  }
-
-  play() {
-    console.log(`${this.name} грає на ${this.instrument} в групі ${this.#band}`);
-  }
-}
-
-class Band {
-  #name;
-  #members = [];
-
-  constructor(name) {
-    this.#name = name;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  get members() {
-    return this.#members;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  addMember(newMember) {
-    if (newMember instanceof Musician) {
-      this.#members.push(newMember);
-    } else {
-      console.log('Новий учасник повинен бути екземпляром класу Musician');
-    }
-  }
-
-  playMusic() {
-    this.#members.forEach(member => member.play());
-  }
-}
-
-class Performance {
-  #band;
-  #location;
-  #date;
-
-  constructor(band, location, date) {
-    this.#band = band;
-    this.#location = location;
-    this.#date = date;
-  }
-
-  get band() {
-    return this.#band;
-  }
-
-  get location() {
-    return this.#location;
-  }
-
-  get date() {
-    return this.#date;
-  }
-
-  info() {
-    console.log(`Гурт ${this.#band.name} виступить в ${this.#location} ${this.#date.toLocaleDateString()}`);
-  }
-}
-
-class Concert extends Performance {
-  #ticketPrice;
-
-  constructor(band, location, date, ticketPrice) {
-    super(band, location, date);
-    this.#ticketPrice = ticketPrice;
-  }
-
-  get ticketPrice() {
-    return this.#ticketPrice;
-  }
-
-  set ticketPrice(newPrice) {
-    this.#ticketPrice = newPrice;
-  }
-
-  info() {
-    console.log(`Гурт ${super.band.name} виступить в ${super.location} ${super.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`);
-  }
-}
-
-class Vocalist {
-  #name;
-  #band;
-
-  constructor(name, band) {
-    this.#name = name;
-    this.#band = band;
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  get band() {
-    return this.#band;
-  }
-
-  set name(newName) {
-    this.#name = newName;
-  }
-
-  set band(newBand) {
-    this.#band = newBand;
-  }
-
-  info() {
-    console.log(`Вокаліст ${this.#name} є членом гурту ${this.#band}`);
-  }
-}
-
-class SongWriter {
-  #songs = [];
-
-  addSong(song) {
-    this.#songs.push(song);
-  }
-
-  info() {
-    console.log(`Написав ${this.#songs.length} пісень`);
-  }
-}
-
-class LeadSinger extends Vocalist {
-  #songs = [];
-
-  constructor(name, band) {
-    super(name, band);
-  }
-
-  info() {
-    console.log(`Лідер гурту ${this.band} - ${this.name}. Написав ${this.#songs.length} пісень.`);
-  }
-}
-
-const musician = new Musician('John', 'гітара');
-const guitarist = new Guitarist('Jimmy Page', 'Led Zeppelin');
-const bassist = new Bassist('Paul McCartney', 'The Beatles');
-const band = new Band('The Beatles');
-band.addMember(bassist);
-
-const performance = new Performance(band, 'Liverpool', new Date('2023-08-01'));
-const concert = new Concert(band, 'BBC studios', new Date('1994-07-06'), 100);
-const vocalist = new Vocalist('Freddie Mercury', 'Queen');
-const songwriter = new SongWriter();
-songwriter.addSong('Yesterday');
-songwriter.addSong('Hey Jude');
-songwriter.addSong('Let It Be');
-const leadsinger = new LeadSinger('Mick Jagger', 'The Rolling Stones');
-
-musician.play();
-guitarist.play();
-bassist.play();
-band.playMusic();
-performance.info();
-concert.info();
-vocalist.info();
-songwriter.info();
-leadsinger.info();
-
-console.log(`Загальна кількість музикантів: ${Musician.count}`);
